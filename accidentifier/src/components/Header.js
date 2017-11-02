@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text,
-        View, Image, TextInput } from 'react-native';
+        View, Image, TextInput,
+        Dimensions } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 let { width, height } = Dimensions.get('window')
