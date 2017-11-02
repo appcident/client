@@ -2,12 +2,9 @@
 <manifest package="y"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-
-  <uses-sdk
-    android:minSdkVersion="16" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
   <application
     android:name=".MainApplication"
@@ -38,8 +35,8 @@
     <!-- The Facebook SDK runs FacebookInitProvider on startup and crashes if there isn't an ID here -->
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="fb0"/>
     <meta-data
-      android:name="com.google.android.geo.AIzaSyBHNb59k1UZni8vP8qt9rcb2kKDK2Y1vHs"
-      android:value="AIzaSyBHNb59k1UZni8vP8qt9rcb2kKDK2Y1vHs"/>
+      android:name="com.google.android.geo.API_KEY"
+      android:value="AIzaSyCcMjuDmtXJLhqQHOu--Ff5ZoP10GTg1E4"/>
   </application>
 
 </manifest>

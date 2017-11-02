@@ -7,9 +7,6 @@ import Header from './src/components/Header'
 
 export default class App extends React.Component {
   render() {
-    const { region } = this.props
-    console.log(region)
-
     return (
       <View style={styles.bodyWrap}>
         <Header />
