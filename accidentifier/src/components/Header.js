@@ -3,7 +3,38 @@ import { StyleSheet, Text,
         View, Image, TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
+let { width, height } = Dimensions.get('window')
+const ASPECT_RATIO = width / height
+const LATITUDE = 0
+const LONGITUDE = 0
+const LATITUDE_DELTA = 0.0922
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
+
 export default class Header extends React.Component {
+
+  constructor(){
+    super()
+    this.state = {
+      region: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }
+    }
+  }
+  // onSearchChange(data){
+  //   console.log(data)
+  //   this.setState({
+  //     region: {
+  //       latitude: data.latitude,
+  //       longitude: data.longitude,
+  //       latitudeDelta: LATITUDE_DELTA,
+  //       longitudeDelta: LONGITUDE_DELTA,
+  //     }
+  //   })
+  // }
+
   render() {
     return (
       <View style={styles.container}>
@@ -15,6 +46,14 @@ export default class Header extends React.Component {
           minLength={2}
           autoFocus={false}
           fetchDetails={true}
+          onPress={(data, details = null) => {
+            const region = {
+              latitude: details.geometry.location.lat,
+              longitude: details.geometry.location.lng,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }
+          }}
           styles={{
             textInputContainer: {
               backgroundColor: 'rgba(0,0,0,0)',

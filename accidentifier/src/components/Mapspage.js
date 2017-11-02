@@ -42,8 +42,6 @@ export default class Maps extends React.Component {
     )
   }
 
-  // onSearchChange()
-
   render() {
     console.log('regi on',this.state.region);
     return (
