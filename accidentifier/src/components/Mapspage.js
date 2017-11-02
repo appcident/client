@@ -3,7 +3,6 @@ import { StyleSheet, Text,
         View, Picker,
         Dimensions } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
-// import Mapsi from './src/components/Maps'
 
 let { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
@@ -36,27 +35,12 @@ export default class Maps extends React.Component {
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }
-        });
+        })
       },
-    (error) => console.log(error.message),
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
-    // this.watchID = navigator.geolocation.watchPosition(
-    //   position => {
-    //     this.setState({
-    //       region: {
-    //         latitude: position.coords.latitude,
-    //         longitude: position.coords.longitude,
-    //         latitudeDelta: LATITUDE_DELTA,
-    //         longitudeDelta: LONGITUDE_DELTA,
-    //       }
-    //     });
-    //   }
-    // );
+      (error) => console.log(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    )
   }
-  // componentWillUnmount() {
-  //   navigator.geolocation.clearWatch(this.watchID);
-  // }
 
   render() {
     console.log('regi on',this.state.region);
@@ -88,7 +72,7 @@ export default class Maps extends React.Component {
           </Picker>
         </View>
       </View>
-    );
+    )
   }
 }
 
