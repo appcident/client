@@ -16,6 +16,7 @@ export default class Maps extends React.Component {
   constructor(){
     super()
     this.state = {
+      selectedRadius: '1 KM',
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -58,7 +59,6 @@ export default class Maps extends React.Component {
   // }
 
   render() {
-    // const { region } = this.props;
     console.log('regi on',this.state.region);
     return (
       <View style ={styles.container}>
@@ -70,10 +70,8 @@ export default class Maps extends React.Component {
           followsUserLocation={true}
           region={ this.state.region }
           onRegionChange={ region => this.setState({ region })}
-          onRegionChangeComplete={ region => this.setState({ region })}
-        >
+          onRegionChangeComplete={ region => this.setState({ region })}>
           <MapView.Marker
-            
             title={'You are here'}
             coordinate={ this.state.region }
           />
@@ -97,17 +95,16 @@ export default class Maps extends React.Component {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    top: '22%',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
   footerWrap: {
     position: 'absolute', 
-    bottom: 25, 
-    backgroundColor: 'white', 
+    bottom: 15, 
+    backgroundColor: 'rgba(255,255,255, 0.9)',
     width: '100%',
-    padding: 10, 
-    alignItems: 'center' ,
+    paddingBottom: 8, 
+    alignItems: 'center'
   }
 });
