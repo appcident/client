@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, 
         View, Picker } from 'react-native';
+
 import MapView from 'react-native-maps'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 // import Mapsi from './src/components/Maps'
 
 export default class Maps extends React.Component {
@@ -34,7 +34,7 @@ export default class Maps extends React.Component {
               longitude: -122.4324
             }} 
             title={"title"}
-            description={"you're here"}
+            description={"description"}
           />
         </MapView>
         <View style={styles.footerWrap}>

@@ -11,6 +11,7 @@ import java.util.List;
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
 import com.airbnb.android.react.maps.MapsPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 
 
 public class MainApplication extends MultiDexApplication {
@@ -22,7 +23,8 @@ public class MainApplication extends MultiDexApplication {
         // TODO: add cool native modules
 
         // Needed for `react-native link`
-        // new MainReactPackage(),@Override
+        // new MainReactPackage(),
+            new MapsPackage(),@Override
 @Override
      protected List<ReactPackage> getPackages() {
          return Arrays.<ReactPackage>asList(
