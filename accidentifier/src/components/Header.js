@@ -1,8 +1,9 @@
-import React from 'react';
+import React from 'react'
 import { StyleSheet, Text,
         View, Image, TextInput,
-        Dimensions } from 'react-native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+        Dimensions } from 'react-native'
+import { connect } from 'react-redux'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
 let { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
@@ -24,6 +25,7 @@ export default class Header extends React.Component {
       }
     }
   }
+
   // onSearchChange(data){
   //   console.log(data)
   //   this.setState({
@@ -54,6 +56,8 @@ export default class Header extends React.Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             }
+            this.onSearchChange(region, region.latitude, region.longitude)
+            console.log('ini state press', this.state)
           }}
           styles={{
             textInputContainer: {
