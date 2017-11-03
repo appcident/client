@@ -17,7 +17,7 @@ export default class Maps extends React.Component {
   constructor(){
     super()
     this.state = {
-      selectedRadius: '1 KM',
+      selectedRadius: 1000,
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -61,6 +61,11 @@ export default class Maps extends React.Component {
             title={'You are here'}
             coordinate={ this.state.region }
           />
+          <MapView.Circle
+            center={{latitude: this.state.region.latitude, longitude: this.state.region.longitude}}
+            radius={this.state.selectedRadius}
+            fillColor="rgba(0, 0, 0, 0.2)"
+            strokeColor="rgba(0, 0, 0, 0.2)"/>
         </MapView>
         <List />
         <View style={styles.footerWrap}>
