@@ -9,8 +9,8 @@ import { search_region } from '../actions/RegionActions'
 
 let { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
-const LATITUDE = 0
-const LONGITUDE = 0
+const LATITUDE = 6.17511
+const LONGITUDE = 106.8650395
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
@@ -67,13 +67,15 @@ class Header extends React.Component {
           styles={{
             textInputContainer: {
               backgroundColor: 'rgba(0,0,0,0)',
-              width: '85%',
+              width: '100%',
               paddingTop: 0,
               borderTopWidth: 0,
               borderBottomWidth: 0,
               marginTop: 10,
               height: 40,
               alignItems: 'center',
+              paddingLeft: '10%',
+              paddingRight: '10%',
             },
             textInput: {
               backgroundColor: 'rgba(0,0,0,0.1)',
