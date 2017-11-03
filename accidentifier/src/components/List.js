@@ -42,7 +42,7 @@ class List extends Component {
           <View style={styles.container}>
               <Text>List Accidents</Text>
               <FlatList
-                /* horizontal */
+                horizontal
                 renderItem={({item}) => this._renderItem(item)}
                 data={data_dummy}
               />
