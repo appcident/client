@@ -1,7 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, 
         View, Picker,
-        Dimensions } from 'react-native'
+        Dimensions, Button,
+      Slider } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 // import Mapsi from './src/components/Maps'
 import List from './List'
@@ -13,9 +14,32 @@ const LONGITUDE = 0
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
+const optionRadius = [
+  {
+    label: 'select radius',
+    value: 0
+  },
+  {
+    label: '1 KM',
+    value: 1000
+  },
+  {
+    label: '3 KM',
+    value: 3000
+  },
+  {
+    label: '5 KM',
+    value: 5000
+  },
+  {
+    label: '10 KM',
+    value: 10000
+  }
+]
+
 export default class Maps extends React.Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       selectedRadius: 1000,
       region: {
@@ -69,15 +93,31 @@ export default class Maps extends React.Component {
         </MapView>
         <List />
         <View style={styles.footerWrap}>
-          <Picker
+          {/* <Picker
             style={{width: '40%'}}
             selectedValue={this.state.selectedRadius}
-            onValueChange={(radius) => this.setState({selectedRadius: radius})}>
+            onValueChange={(radius) => this.setState({selectedRadius: radius})}
+            >
+            {optionRadius.map((i, index) => (
+              <Picker.Item key={index} label={i.label} value={i.value} />
+            ))} 
+            
+             {/* <Picker.Item label="select radius" value="" />
             <Picker.Item label="1 KM" value="1" />
-            <Picker.Item label="3 KM" value="2" />
-            <Picker.Item label="5 KM" value="3" />
-            <Picker.Item label="10 KM" value="4" />
-          </Picker>
+            <Picker.Item label="3 KM" value="3" />
+            <Picker.Item label="5 KM" value="5" />
+            <Picker.Item label="10 KM" value="10" />  */}
+          {/* </Picker> */}
+          <Slider
+            style={styles.slider}
+            value={1000}
+            minimumValue={0}
+            maximumValue={10000}
+            step={1000}
+            onValueChange={(radius) => this.setState({selectedRadius: radius})} />
+          <Button 
+            onPress={() => this.getNews()}
+            title="Find"/>
         </View>
       </View>
     );
@@ -92,11 +132,16 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   footerWrap: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     position: 'absolute', 
     bottom: 15, 
     backgroundColor: 'rgba(255,255,255, 0.9)',
     width: '100%',
     paddingBottom: 8, 
     alignItems: 'center'
+  },
+  slider: {
+    width: 300,
   }
 });
