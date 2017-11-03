@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, 
         View, Picker,
         Dimensions } from 'react-native'
+import { connect } from 'react-redux'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 
 let { width, height } = Dimensions.get('window')
@@ -11,9 +12,9 @@ const LONGITUDE = 0
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
-export default class Maps extends React.Component {
-  constructor(){
-    super()
+class Maps extends React.Component {
+  constructor(props){
+    super(props)
     this.state = {
       selectedRadius: '1 KM',
       region: {
@@ -43,7 +44,7 @@ export default class Maps extends React.Component {
   }
 
   render() {
-    console.log('regi on',this.state.region);
+    console.log('region',this.props.regional);
     return (
       <View style ={styles.container}>
         <MapView
@@ -53,8 +54,15 @@ export default class Maps extends React.Component {
           showsCompass={true}
           followsUserLocation={true}
           region={ this.state.region }
-          onRegionChange={ region => this.setState({ region })}
-          onRegionChangeComplete={ region => this.setState({ region })}>
+          onRegionChange={ region => this.setState({
+            region:{
+              latitude: this.props.regional.latitude,
+              longitude: this.props.regional.longitude,
+              latitudeDelta: this.props.regional.latitudeDelta,
+              longitudeDelta: this.props.regional.longitudeDelta
+            }
+          })}
+          >
           <MapView.Marker
             title={'You are here'}
             coordinate={ this.state.region }
@@ -91,4 +99,20 @@ const styles = StyleSheet.create({
     paddingBottom: 8, 
     alignItems: 'center'
   }
-});
+})
+
+const mapStateToProps = state => {
+  console.log('all state di maps', state)
+  console.log('bawahnya all state', state.HeaderReducer.regional)
+  return {
+    regional: state.HeaderReducer.regional
+  }
+}
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     searchRegion: (data) =>  dispatch(search_region(data))
+//   }
+// }
+
+export default connect(mapStateToProps, null)(Maps)

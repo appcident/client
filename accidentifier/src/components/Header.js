@@ -5,6 +5,8 @@ import { StyleSheet, Text,
 import { connect } from 'react-redux'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
+import { search_region } from '../actions/RegionActions'
+
 let { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
 const LATITUDE = 0
@@ -12,7 +14,7 @@ const LONGITUDE = 0
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
-export default class Header extends React.Component {
+class Header extends React.Component {
 
   constructor(){
     super()
@@ -26,19 +28,23 @@ export default class Header extends React.Component {
     }
   }
 
-  // onSearchChange(data){
-  //   console.log(data)
-  //   this.setState({
-  //     region: {
-  //       latitude: data.latitude,
-  //       longitude: data.longitude,
-  //       latitudeDelta: LATITUDE_DELTA,
-  //       longitudeDelta: LONGITUDE_DELTA,
-  //     }
-  //   })
-  // }
+  onSearchChange(data){
+    // ini dikirim ek store harusnya
+    console.log('ini data on search',data.latitude)
+    this.setState({
+      region: {
+        latitude: data.latitude,
+        longitude: data.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }
+    })
+    console.log('region atas', this.state.region)
+    this.props.searchRegion(this.state.region)
+  }
 
   render() {
+    console.log('state render',this.state.region)
     return (
       <View style={styles.container}>
         <Image 
@@ -56,8 +62,7 @@ export default class Header extends React.Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             }
-            this.onSearchChange(region, region.latitude, region.longitude)
-            console.log('ini state press', this.state)
+            this.onSearchChange(region)
           }}
           styles={{
             textInputContainer: {
@@ -109,4 +114,17 @@ const styles = StyleSheet.create({
     width: '45%', 
     height: 40,
   }
-});
+})
+
+// const mapStateToProps = state => {
+//   return {
+//   }
+// }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    searchRegion: (detailRegion) =>  dispatch(search_region(detailRegion))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Header)
