@@ -7,8 +7,8 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 
 let { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
-const LATITUDE = 6.17511
-const LONGITUDE = 106.8650395
+const LATITUDE = 0
+const LONGITUDE = 0
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
@@ -60,6 +60,10 @@ class Maps extends React.Component {
     )
   }
 
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
+
   render() {
     console.log('region',this.props.regional);
     console.log('====>', this.state.region)
@@ -71,6 +75,7 @@ class Maps extends React.Component {
           showsUserLocation={ true }
           showsCompass={true}
           followsUserLocation={true}
+          fetchDetails={true}
           region={ this.state.region }
           onRegionChangeComplete={ region => this.setState({
             region:{
@@ -80,7 +85,7 @@ class Maps extends React.Component {
               longitudeDelta: this.props.regional.longitudeDelta
             }
           })}
-          onRegionChange={ region => this.setState({ region })}
+          onRegionChange={ region => this.setState({ region }) }
           showsTraffic={true}
           zoomEnabled={true}
           moveOnMarkerPress={true}
@@ -93,8 +98,7 @@ class Maps extends React.Component {
             return (
               <MapView.Marker key = {idx}
                 title = {data.title}
-                coordinate = {data.coordinates}
-              />
+                coordinate = {data.coordinates}/>
             )
           })}
         </MapView>
@@ -117,7 +121,6 @@ class Maps extends React.Component {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    top: 0
   },
   map: {
     ...StyleSheet.absoluteFillObject,

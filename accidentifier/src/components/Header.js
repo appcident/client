@@ -103,7 +103,7 @@ class Header extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(255,255,255, 0.8)',
+    backgroundColor: 'rgba(255,255,255, 0.9)',
     position: 'absolute',
     top:0,
     width: '100%',
