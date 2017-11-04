@@ -5,7 +5,7 @@ import { StyleSheet, Text,
 import { connect } from 'react-redux'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
-import { search_region } from '../actions/RegionActions'
+import { setRegion } from '../actions/RegionActions'
 
 let { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
@@ -16,31 +16,33 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 class Header extends React.Component {
 
-  constructor(){
-    super()
-    // this.state = {
-    //   region: {
-    //     latitude: LATITUDE,
-    //     longitude: LONGITUDE,
-    //     latitudeDelta: LATITUDE_DELTA,
-    //     longitudeDelta: LONGITUDE_DELTA,
-    //   }
-    // }
-  }
+  // constructor(){
+  //   super()
+  //   this.state = {
+  //     region: {
+  //       latitude: LATITUDE,
+  //       longitude: LONGITUDE,
+  //       latitudeDelta: LATITUDE_DELTA,
+  //       longitudeDelta: LONGITUDE_DELTA,
+  //     }
+  //   }
+  // }
 
-  onSearchChange(detailRegion){
-    // ini dikirim ek store harusnya
-    console.log('ini data on search',detailRegion)
+  onSearchChange(region){
+  //   // ini dikirim ek store harusnya
+  //   console.log('ini data on search',detailRegion)
     // this.setState({
     //   region: {
-    //     latitude: data.latitude,
-    //     longitude: data.longitude,
+    //     latitude: detailRegion.latitude,
+    //     longitude: detailRegion.longitude,
     //     latitudeDelta: LATITUDE_DELTA,
     //     longitudeDelta: LONGITUDE_DELTA,
     //   }
     // })
     // console.log('region atas', this.state.region)
-    this.props.searchRegion(detailRegion)
+    console.log('di klik')
+    this.props.setRegion(region)
+    // this.props.setRegion(region)
   }
 
   render() {
@@ -118,15 +120,24 @@ const styles = StyleSheet.create({
   }
 })
 
-// const mapStateToProps = state => {
+const mapStateToProps = state => {
+  return {
+    regional: state.HeaderReducer.regional
+  }
+}
+
+// const mapDispatchToProps = dispatch => {
 //   return {
+//     setRegion: (detailRegion) =>  dispatch(setRegion(detailRegion))
+//     // searchRegion: (detailRegion) =>  dispatch(search_region(detailRegion))
 //   }
 // }
 
 const mapDispatchToProps = dispatch => {
   return {
-    searchRegion: (detailRegion) =>  dispatch(search_region(detailRegion))
+    setRegion: (region) =>  dispatch(setRegion(region))
   }
-}
+} 
 
-export default connect(null, mapDispatchToProps)(Header)
+// export default connect(null, mapDispatchToProps)(Header)
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

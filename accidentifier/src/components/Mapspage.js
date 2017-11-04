@@ -4,13 +4,14 @@ import { StyleSheet, Text,
         Dimensions, Button, Slider, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
+import { setRegion } from '../actions/RegionActions'
 
 import List from './List'
 
 let { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
-const LATITUDE = 6.17511
-const LONGITUDE = 106.8650395
+const LATITUDE = 6.17511 //  anggep aja Jakarta 
+const LONGITUDE = 106.8650395 // //  anggep aja Jakarta
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
@@ -18,14 +19,8 @@ class Maps extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      selectedRadius: null,
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
-      markers: [{
+      selectedRadius: 1000,
+      markers: [{  // dummies multiple marker
         title: 'Koi Residence',
         coordinates: {
           latitude: -6.258185,
@@ -53,44 +48,58 @@ class Maps extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    console.log('did mount')
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.setState({
-          region: {
+        // this.setState({
+          dataRegion = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }
-        })
+        // })
+        this.props.setRegion(dataRegion)
+
       },
       (error) => console.log(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     )
   }
 
+  functionAA (region) {
+    console.log('aa')
+    this.props.setRegion(region)
+  }
+
+  functionBB () {
+    console.log('bb')
+  }
+
+
   render() {
-    console.log('regional state',this.props.regional);
-    console.log('region state ====>', this.state.region)
+    console.log('data store regional',this.props.regional);
+    // console.log('region state ====>', this.state.region)
     return (
       <View style ={styles.container}>
         <MapView
           provider={ PROVIDER_GOOGLE }
           style={ styles.map }
           showsUserLocation={ true }
+          showsMyLocationButton={true}
           showsCompass={true}
-          followsUserLocation={true}
-          fetchDetails={true}
-          region={ this.state.region }
+          region={ this.props.regional }
           showsTraffic={true}
           zoomEnabled={true}
-          moveOnMarkerPress={true}
+          moveOnMarkerPress={false}
+          onRegionChangeComplete={ region => this.functionAA(region) }
           >
           <MapView.Marker draggable
             title={'Drag n Push Me'}
-            coordinate={ this.state.region }
-            onDragEnd={(e) => this.setState({ region: e.nativeEvent.coordinate })}
+            coordinate={ this.props.regional }
+            onPress={e => console.log(e.nativeEvent)}
+            onDragEnd={e => console.log('drag end', e.nativeEvent)}
           />
           {this.state.markers.map((data, idx) => {
             return (
@@ -102,11 +111,11 @@ class Maps extends React.Component {
             )
           })}
           <MapView.Circle
-            center={{latitude: this.state.region.latitude, longitude: this.state.region.longitude}}
+            center={{latitude: this.props.regional.latitude, longitude: this.props.regional.longitude}}
             radius={this.state.selectedRadius}
             fillColor="rgba(0, 0, 0, 0.2)"
             strokeColor="rgba(0, 0, 0, 0.2)"/>
-        </MapView>
+          </MapView>
         <List />
         <View style={styles.footerWrap}>
           <Slider
@@ -153,21 +162,29 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  console.log('all state di maps', state)
   console.log('bawahnya all state', state.HeaderReducer.regional)
   return {
     regional: state.HeaderReducer.regional
   }
 }
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     searchRegion: (data) =>  dispatch(search_region(data))
-//   }
-// } 
-//compassStyle={{
-//   bottom: 50,
-//   left: 10,
-// }}
+const mapDispatchToProps = dispatch => {
+  return {
+    setRegion: (region) =>  dispatch(setRegion(region))
+  }
+} 
 
-export default connect(mapStateToProps, null)(Maps)
+export default connect(mapStateToProps, mapDispatchToProps)(Maps)
+
+// onRegionChangeComplete={ region => this.setState({
+//   region:{
+//     latitude: this.props.regional.latitude,
+//     longitude: this.props.regional.longitude,
+//     latitudeDelta: this.props.regional.latitudeDelta,
+//     longitudeDelta: this.props.regional.longitudeDelta
+//   }
+// })}
+
+
+
+// onDragEnd={(e) => this.setState({ region: e.nativeEvent.coordinate })}
