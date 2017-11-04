@@ -1,7 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, 
         View, Picker,
-        Dimensions, Button, Slider, FlatList } from 'react-native'
+        Dimensions, Button, 
+        Slider, FlatList,
+        TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import { setRegion } from '../actions/RegionActions'
@@ -72,11 +74,10 @@ class Maps extends React.Component {
     console.log('aa')
     this.props.setRegion(region)
   }
-
-  functionBB () {
-    console.log('bb')
+  
+  findMeButton(){
+    
   }
-
 
   render() {
     console.log('data store regional',this.props.regional);

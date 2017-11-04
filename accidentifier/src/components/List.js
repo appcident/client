@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {
-  Text,
+    Text,
     View,
     StyleSheet,
     FlatList,
@@ -42,15 +42,16 @@ class List extends Component {
           <View style={styles.container}>
             <FlatList horizontal
             data={data_dummy}
-            keyExtractor={(item, index) => index+1}
             renderItem={({item}) => {
-                <View key={index}>
-                    <Image
-                        style={styles.img}
-                        source={{uri: item.image}} />
-                </View>
+                return (
+                    <View style={styles.contentWrap}>
+                        <Text>{item.title}</Text>
+                        <Image
+                            style={styles.img}
+                            source={{uri: item.image}} />
+                    </View>
+                )
             }}
-            
             />
           </View>
 
@@ -67,6 +68,13 @@ const styles = StyleSheet.create({
         // paddingBottom: 8, 
         alignItems: 'center'
     },
+    contentWrap:{
+        backgroundColor: 'red',
+        width: 320,
+        padding: 10,
+        marginLeft: 10,
+        marginRight: 10
+    },
     img: {
         width: 50,
         height: 50
@@ -82,7 +90,3 @@ export default List
 //         </View>
 //     )
 // } 
-
-{/* <uses-sdk
-android:minSdkVersion="16"
-android:targetSdkVersion="22" /> */}
