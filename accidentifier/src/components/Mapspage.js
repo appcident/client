@@ -1,14 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, 
         View, Picker,
-        Dimensions } from 'react-native'
+        Dimensions, Button, Slider, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 
+import List from './List'
+
 let { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
-const LATITUDE = 0
-const LONGITUDE = 0
+const LATITUDE = 6.17511
+const LONGITUDE = 106.8650395
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
@@ -30,7 +32,7 @@ class Maps extends React.Component {
           longitude: 106.783374,
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
-        },
+        }
       },{
         title: 'Jl. Desa Cilember, Bogor',
         coordinates: {
@@ -38,7 +40,15 @@ class Maps extends React.Component {
           longitude: 106.9179212,
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
-        },  
+        } 
+      },{
+        title: 'Jl. Kebon Baru Utara',
+        coordinates: {
+          latitude: -6.233003,
+          longitude: 106.862131,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }
       }]
     }
   }
@@ -60,13 +70,9 @@ class Maps extends React.Component {
     )
   }
 
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchID);
-  }
-
   render() {
-    console.log('region',this.props.regional);
-    console.log('====>', this.state.region)
+    console.log('regional state',this.props.regional);
+    console.log('region state ====>', this.state.region)
     return (
       <View style ={styles.container}>
         <MapView
@@ -77,41 +83,42 @@ class Maps extends React.Component {
           followsUserLocation={true}
           fetchDetails={true}
           region={ this.state.region }
-          onRegionChangeComplete={ region => this.setState({
-            region:{
-              latitude: this.props.regional.latitude,
-              longitude: this.props.regional.longitude,
-              latitudeDelta: this.props.regional.latitudeDelta,
-              longitudeDelta: this.props.regional.longitudeDelta
-            }
-          })}
-          onRegionChange={ region => this.setState({ region }) }
           showsTraffic={true}
           zoomEnabled={true}
           moveOnMarkerPress={true}
           >
-          <MapView.Marker
-            title={'You are here'}
+          <MapView.Marker draggable
+            title={'Drag n Push Me'}
             coordinate={ this.state.region }
+            onDragEnd={(e) => this.setState({ region: e.nativeEvent.coordinate })}
           />
           {this.state.markers.map((data, idx) => {
             return (
               <MapView.Marker key = {idx}
                 title = {data.title}
-                coordinate = {data.coordinates}/>
+                coordinate = {data.coordinates}
+                image={require('../assets/images/markerpoint5.png')}
+              />
             )
           })}
+          <MapView.Circle
+            center={{latitude: this.state.region.latitude, longitude: this.state.region.longitude}}
+            radius={this.state.selectedRadius}
+            fillColor="rgba(0, 0, 0, 0.2)"
+            strokeColor="rgba(0, 0, 0, 0.2)"/>
         </MapView>
+        <List />
         <View style={styles.footerWrap}>
-          <Picker
-            style={{width: '40%'}}
-            selectedValue={this.state.selectedRadius}
-            onValueChange={(radius) => this.setState({selectedRadius: radius})}>
-            <Picker.Item label="1 KM" value="1000" />
-            <Picker.Item label="3 KM" value="2000" />
-            <Picker.Item label="5 KM" value="3" />
-            <Picker.Item label="10 KM" value="4" />
-          </Picker>
+          <Slider
+            style={styles.slider}
+            value={1000}
+            minimumValue={0}
+            maximumValue={10000}
+            step={1000}
+            onValueChange={(radius) => this.setState({selectedRadius: radius})} />
+          <Button 
+            onPress={() => this.getNews()}
+            title="Find"/>
         </View>
       </View>
     )
@@ -131,6 +138,8 @@ const styles = StyleSheet.create({
     left: 10,
   },
   footerWrap: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     position: 'absolute', 
     bottom: 15, 
     backgroundColor: 'rgba(255,255,255, 0.9)',
@@ -138,6 +147,9 @@ const styles = StyleSheet.create({
     paddingBottom: 8, 
     alignItems: 'center'
   },
+  slider: {
+    width: 300,
+  }
 })
 
 const mapStateToProps = state => {

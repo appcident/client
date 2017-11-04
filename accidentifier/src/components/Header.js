@@ -18,33 +18,33 @@ class Header extends React.Component {
 
   constructor(){
     super()
-    this.state = {
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      }
-    }
+    // this.state = {
+    //   region: {
+    //     latitude: LATITUDE,
+    //     longitude: LONGITUDE,
+    //     latitudeDelta: LATITUDE_DELTA,
+    //     longitudeDelta: LONGITUDE_DELTA,
+    //   }
+    // }
   }
 
-  onSearchChange(data){
+  onSearchChange(detailRegion){
     // ini dikirim ek store harusnya
-    console.log('ini data on search',data.latitude)
-    this.setState({
-      region: {
-        latitude: data.latitude,
-        longitude: data.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      }
-    })
-    console.log('region atas', this.state.region)
-    this.props.searchRegion(this.state.region)
+    console.log('ini data on search',detailRegion)
+    // this.setState({
+    //   region: {
+    //     latitude: data.latitude,
+    //     longitude: data.longitude,
+    //     latitudeDelta: LATITUDE_DELTA,
+    //     longitudeDelta: LONGITUDE_DELTA,
+    //   }
+    // })
+    // console.log('region atas', this.state.region)
+    this.props.searchRegion(detailRegion)
   }
 
   render() {
-    console.log('state render',this.state.region)
+    // console.log('state render',this.state.region)
     return (
       <View style={styles.container}>
         <Image 
