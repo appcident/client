@@ -4,52 +4,34 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Image
+    Image,
+    Linking,
+    TouchableHighlight
 } from 'react-native'
-
-const data_dummy = [
-    {
-        key: 1,
-        title: 'Title 1',
-        image: 'https://dummyimage.com/300',
-        content: 'content 1'
-    },
-    {
-        key: 2,
-        title: 'Title 2',
-        image: 'https://d3lwq5rlu14cro.cloudfront.net/v1/fuwogMIHAFcdCrC2D4cT.png',
-        content: 'content 2'
-    },
-    {
-        key: 3,
-        title: 'Title 3',
-        image: 'https://dummyimage.com/300',
-        content: 'content 3'
-    },
-    {
-        key: 4,
-        title: 'Title 4',
-        image: 'https://d3lwq5rlu14cro.cloudfront.net/v1/fuwogMIHAFcdCrC2D4cT.png',
-        content: 'content 4'
-    }
-]
-
+import { connect } from 'react-redux'
 
 class List extends Component {
     
+    _onPress (link) {
+        console.log('open link')
+        Linking.openURL(link)
+    }
+
     render() {
         return (
           <View style={styles.container}>
             <FlatList horizontal
-            data={data_dummy}
+            data={this.props.accidents.accidents}
             renderItem={({item}) => {
                 return (
-                    <View style={styles.contentWrap}>
-                        <Text>{item.title}</Text>
-                        <Image
-                            style={styles.img}
-                            source={{uri: item.image}} />
-                    </View>
+                    <TouchableHighlight onPress={() => {this._onPress(item.accident.linksite)} }>
+                        <View style={styles.contentWrap}>
+                            <Text>{item.accident.title}</Text>
+                            <Image
+                                style={styles.img}
+                                source={{uri: item.accident.imgUrl}} />
+                        </View>
+                    </TouchableHighlight>
                 )
             }}
             />
@@ -59,6 +41,22 @@ class List extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    console.log('bawahnya all state', state.HeaderReducer.regional)
+    return {
+        accidents: state.HeaderReducer.accidents
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setRegion: (region) => dispatch(setRegion(region))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)
+
+// export default List
 const styles = StyleSheet.create({
     container: {
         width: '100%',
@@ -81,12 +79,3 @@ const styles = StyleSheet.create({
     },
   })
 
-export default List
-
-// _renderItem(item){
-//     return (
-//         <View>
-//         <Image style={{width: 100, height: 100}} source={{uri: item.image}}/>
-//         </View>
-//     )
-// } 

@@ -6,7 +6,7 @@ import { StyleSheet, Text,
         TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
-import { setRegion } from '../actions/RegionActions'
+import { setRegion, getDataAPI } from '../actions/RegionActions'
 
 import List from './List'
 
@@ -21,7 +21,8 @@ class Maps extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      selectedRadius: 1000,
+      selectedRadius: 0,
+      // radiusDefider: 0,
       markers: [{  // dummies multiple marker
         title: 'Koi Residence',
         coordinates: {
@@ -70,13 +71,29 @@ class Maps extends React.Component {
     )
   }
 
+  changeLabelRadius(radius) {
+    console.log('state radius di change label', this.state.selectedRadius)
+    // console.log('defider', this.state.radiusDefider)
+    this.setState({
+      selectedRadius: radius,
+      // radiusDefider: this.state.selectedRadius / 1000
+    })
+  }
+
+
   functionAA (region) {
     console.log('aa')
     this.props.setRegion(region)
   }
-  
-  findMeButton(){
-    
+
+  getNews () {
+    console.log('click')
+    var dataFromMaps = {
+      lat: this.props.regional.latitude,
+      lng: this.props.regional.longitude,
+      radius: this.state.selectedRadius / 1000
+    }
+    this.props.getDataAPI(dataFromMaps)
   }
 
   render() {
@@ -102,7 +119,7 @@ class Maps extends React.Component {
             onPress={e => console.log(e.nativeEvent)}
             onDragEnd={e => console.log('drag end', e.nativeEvent)}
           />
-          {this.state.markers.map((data, idx) => {
+          {this.props.accidents.markers.map((data, idx) => {
             return (
               <MapView.Marker key = {idx}
                 title = {data.title}
@@ -121,11 +138,12 @@ class Maps extends React.Component {
         <View style={styles.footerWrap}>
           <Slider
             style={styles.slider}
-            value={1000}
+            value={0}
             minimumValue={0}
             maximumValue={10000}
             step={1000}
-            onValueChange={(radius) => this.setState({selectedRadius: radius})} />
+            onValueChange={(radius) => this.changeLabelRadius(radius)} />
+          <Text style={styles.radiusText}> {this.state.selectedRadius / 1000 } KM </Text>
           <Button 
             onPress={() => this.getNews()}
             title="Find"/>
@@ -165,13 +183,16 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   console.log('bawahnya all state', state.HeaderReducer.regional)
   return {
-    regional: state.HeaderReducer.regional
+    regional: state.HeaderReducer.regional,
+    accidents: state.HeaderReducer.accidents
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    setRegion: (region) =>  dispatch(setRegion(region))
+    setRegion: (region) =>  dispatch(setRegion(region)),
+    getDataAPI: (dataFromMaps) => dispatch(getDataAPI(dataFromMaps))
+
   }
 } 
 
