@@ -72,12 +72,12 @@ class Maps extends React.Component {
   }
 
   changeLabelRadius(radius) {
-    console.log('state radius di change label', this.state.selectedRadius)
     // console.log('defider', this.state.radiusDefider)
     this.setState({
       selectedRadius: radius,
       // radiusDefider: this.state.selectedRadius / 1000
     })
+    console.log('state radius di change label', this.state.selectedRadius)
   }
 
 
